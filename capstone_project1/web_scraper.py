@@ -65,8 +65,9 @@ def store(data, site):
         espn_mongo_connect.insert_one(data)
     pass
 
-if __name__ == __main__:
+if __name__ == '__main__':
     rounds = {'1', '2', '3', '4', '5', '6', '7'}
+    '''
     for i in rounds:
         scrape('http://www.nhl.com/ice/draftsearch.htm?year=&team=&position=&round=' + i, 20, 'nhl')
     
@@ -82,3 +83,7 @@ if __name__ == __main__:
             for j in seasons:
                 scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
                     20, 'espn')
+'''
+    
+    scrape('http://www.nhl.com/ice/draftsearch.htm?year=&team=&position=&round=1', 15, 'nhl')
+    scrape('http://www.espn.com/nhl/team/schedule/_/name/wsh/season/2018/seasontype/2', 15, 'espn')
