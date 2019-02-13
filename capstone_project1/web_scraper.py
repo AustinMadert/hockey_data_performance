@@ -68,7 +68,7 @@ def store(parsed_site, site):
     pass
 
 if __name__ == '__main__':
-    rounds = {'1', '2', '3', '4', '5', '6', '7'}
+    rounds = ['2', '3', '4', '5', '6', '7']
     
     for i in rounds:
         scrape('http://www.nhl.com/ice/draftsearch.htm?year=&team=&position=&round=' + i, 20, 'nhl')
@@ -80,8 +80,8 @@ if __name__ == '__main__':
     years = {'2003', '2004', '2003', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', \
         '2013', '2014', '2015', '2016', '2017', '2018', '2019'}
     
-    for i in teams:
-        for k in years:
-            for j in seasons:
-                scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
-                    20, 'espn')
+    # for i in teams:
+    #     for k in years:
+    #         for j in seasons:
+    #             scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
+    #                 20, 'espn')
