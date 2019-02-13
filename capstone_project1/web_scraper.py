@@ -56,7 +56,7 @@ def nhl_parser(website, url):
 def espn_parser(website, url):
     espn_soup = BeautifulSoup(website.text, 'html.parser')
     espn_tbodies = espn_soup.find_all('tbody', class_='Table2__tbody')
-    parsed_site = [{str(ind): ''.join(str(val).strip('[').strip(']'))} \
+    parsed_site = [{url: ''.join(str(val).strip('[').strip(']'))} \
         for ind, val in enumerate([obj.find_all('td') for obj in espn_tbodies])]
     return parsed_site
 
