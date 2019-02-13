@@ -49,15 +49,16 @@ def scrape(url, stall, site='nhl'):
 def nhl_parser(website, url):
     nhl_soup = BeautifulSoup(website.text, 'html.parser')
     nhl_tbodies = nhl_soup.find_all('tbody')
-    parsed_site = [{str(ind): ''.join(str(val).strip('[').strip(']'))} \
+    parsed_site = [{str(ind).replace('.', '_'): ''.join(str(val).strip('[').strip(']'))} \
         for ind, val in enumerate([obj.find_all('td') for obj in nhl_tbodies])]
     return parsed_site
 
 def espn_parser(website, url):
     espn_soup = BeautifulSoup(website.text, 'html.parser')
     espn_tbodies = espn_soup.find_all('tbody', class_='Table2__tbody')
-    parsed_site = [{url: ''.join(str(val).strip('[').strip(']'))} \
-        for ind, val in enumerate([obj.find_all('td') for obj in espn_tbodies])]
+    parsed_site = [{str(url).replace('.', '_'): ''.join(str(val).strip('[').strip(']'))} \
+       if val != [] else {str(url).replace('.', '_'): 'no value'} \
+            for ind, val in enumerate([obj.find_all('td') for obj in espn_tbodies])]
     return parsed_site
 
 def store(parsed_site, site):
@@ -73,15 +74,15 @@ if __name__ == '__main__':
     # for i in rounds:
     #     scrape('http://www.nhl.com/ice/draftsearch.htm?year=&team=&position=&round=' + i, 20, 'nhl')
     
-    teams = {'buf', 'car', 'mtl', 'ott', 'ari', 'det', 'van', 'chi', 'nyr', 'edm', 'nyi', 'dal',\
+    teams = ['buf', 'car', 'mtl', 'ott', 'ari', 'det', 'van', 'chi', 'nyr', 'edm', 'nyi', 'dal',\
          'phi', 'fla', 'col', 'njd', 'cbj', 'lak', 'sjs', 'ana', 'min', 'stl', 'tor', 'wsh', 'bos',\
-        'tbl', 'nsh', 'wpg', 'pit', 'cgy', 'vgk'}
-    seasons = {'1', '2', '3'}
-    years = {'2003', '2004', '2003', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', \
-        '2013', '2014', '2015', '2016', '2017', '2018', '2019'}
+        'tbl', 'nsh', 'wpg', 'pit', 'cgy', 'vgk']
+    seasons = ['1', '2', '3']
+    years = ['2003', '2004', '2003', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', \
+        '2013', '2014', '2015', '2016', '2017', '2018', '2019']
     
     for i in teams:
         for k in years:
             for j in seasons:
                 scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
-                    20, 'espn')
+                    10, 'espn')
