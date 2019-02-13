@@ -86,3 +86,5 @@ if __name__ == '__main__':
             for j in seasons:
                 scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
                     15, 'espn')
+
+https://www.hockey-reference.com/leagues/NHL_1963.html
