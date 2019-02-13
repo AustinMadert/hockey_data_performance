@@ -85,4 +85,4 @@ if __name__ == '__main__':
         for k in years:
             for j in seasons:
                 scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
-                    10, 'espn')
+                    15, 'espn')
