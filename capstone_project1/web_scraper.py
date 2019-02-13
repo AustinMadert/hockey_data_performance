@@ -24,50 +24,53 @@ def scrape(url, stall, site='nhl'):
 
     if site == 'nhl':
         try:
-            parsed_site = nhl_parser(website)
+            parsed_site = nhl_parser(website, url)
         except:
             print("Parse error with nhl.com url")
     else:
         try:
-            parsed_site = espn_parser(website)
+            parsed_site = espn_parser(website, url)
         except:
             print("Parse error with espn.com url")
     
-    dictionary = {str(url): parsed_site}
-    
     try:
         if site == 'nhl':
-            store(dictionary, 'nhl')
+            store(parsed_site, 'nhl')
+            print("URL data successfully stored in database.")
         else:
-            store(dictionary, 'espn')
+            store(parsed_site, 'espn')
+            print("URL data successfully stored in database.")
     except:
         print("Store error with url")
-    print("URL data successfully stored in database.")
+    
     time.sleep(stall)
     pass
 
-def nhl_parser(website):
+def nhl_parser(website, url):
     nhl_soup = BeautifulSoup(website.text, 'html.parser')
     nhl_tbodies = nhl_soup.find_all('tbody')
-    parsed_site = [obj.find_all('td') for obj in nhl_tbodies]
+    parsed_site = [{ind, ''.join(val)} for ind, val in [obj.find_all('td') for obj in nhl_tbodies]]
     return parsed_site
 
-def espn_parser(website):
+def espn_parser(website, url):
     espn_soup = BeautifulSoup(website.text, 'html.parser')
     espn_tbodies = espn_soup.find_all('tbody', class_='Table2__tbody')
-    parsed_site = [obj.find_all('td', class_='Table2__td') for obj in espn_tbodies]
+    parsed_site = [{ind, ''.join(val)} for ind, val in [obj.find_all('td') for obj in espn_tbodies]]
     return parsed_site
 
-def store(data, site):
+def store(parsed_site, site):
     if site == 'nhl':
-        nhl_mongo_connect.insert_one(data)
+        for i in parsed_site:
+            nhl_mongo_connect.insert_one(i)
     else:
-        espn_mongo_connect.insert_one(data)
+        for i in parsed_site:
+            espn_mongo_connect.insert_one(i)
     pass
 
 if __name__ == '__main__':
-    rounds = {'1', '2', '3', '4', '5', '6', '7'}
     '''
+    rounds = {'1', '2', '3', '4', '5', '6', '7'}
+    
     for i in rounds:
         scrape('http://www.nhl.com/ice/draftsearch.htm?year=&team=&position=&round=' + i, 20, 'nhl')
     
