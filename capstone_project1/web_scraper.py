@@ -79,7 +79,7 @@ def hockeyref_parser(website, url):
         for items in data.select("table.stats_table tr"):
             tds = [item.get_text(strip=True) for item in items.select("th,td")]
             table_lists.append(tds)
-    parsed_site = [{str(url): ', '.join(lst)} for lst in table_lists]
+    parsed_site = [{str(url).replace('.', '_'): ', '.join(lst)} for lst in table_lists]
     return parsed_site
 
 def store(parsed_site, site):
