@@ -27,19 +27,27 @@ def scrape(url, stall, site='nhl'):
             parsed_site = nhl_parser(website, url)
         except:
             print("Parse error with nhl.com url")
-    else:
+    elif site == 'espn':
         try:
             parsed_site = espn_parser(website, url)
         except:
             print("Parse error with espn.com url")
+    else:
+        try:
+            parsed_site = hockeyref_parser(website, url)
+        except:
+            print("Parse error with hockey-reference.com url")
     
     try:
         if site == 'nhl':
             store(parsed_site, 'nhl')
             print("URL data successfully stored in database.")
-        else:
+        elif site == 'espn':
             store(parsed_site, 'espn')
             print("URL data successfully stored in database.")
+        else:
+            store(parsed_site, 'hockeyref')
+            print('URL data successfully stored in database.')
     except:
         print("Store error with url")
     
@@ -59,6 +67,17 @@ def espn_parser(website, url):
     parsed_site = [{str(url).replace('.', '_'): ''.join(str(val).strip('[').strip(']'))} \
        if val != [] else {str(url).replace('.', '_'): 'no value'} \
             for ind, val in enumerate([obj.find_all('td') for obj in espn_tbodies])]
+    return parsed_site
+
+def hockeyref_parser(website, url):
+    soup = BeautifulSoup(webpage.text, 'lxml')
+    table_soup = soup.find('div', {'id':'all_stats'})
+    table_lists = []
+    for comment in table_soup.find_all(string=lambda text:isinstance(text,Comment)):
+        data = BeautifulSoup(comment,"lxml")
+        for items in data.select("table.stats_table tr"):
+            tds = [item.get_text(strip=True) for item in items.select("th,td")]
+            table_lists.append(tds)
     return parsed_site
 
 def store(parsed_site, site):
