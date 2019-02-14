@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 import requests
 from pymongo import MongoClient
 import time
@@ -8,6 +8,7 @@ client = MongoClient()
 database = client['hockey_stats']
 nhl_mongo_connect = database['nhl']
 espn_mongo_connect = database['espn']
+hockeyref_mongo_connect = database['hockeyref']
 
 
 def scrape(url, stall, site='nhl'):
@@ -70,7 +71,7 @@ def espn_parser(website, url):
     return parsed_site
 
 def hockeyref_parser(website, url):
-    soup = BeautifulSoup(webpage.text, 'lxml')
+    soup = BeautifulSoup(website.text, 'lxml')
     table_soup = soup.find('div', {'id':'all_stats'})
     table_lists = []
     for comment in table_soup.find_all(string=lambda text:isinstance(text,Comment)):
@@ -78,32 +79,36 @@ def hockeyref_parser(website, url):
         for items in data.select("table.stats_table tr"):
             tds = [item.get_text(strip=True) for item in items.select("th,td")]
             table_lists.append(tds)
+    parsed_site = [{str(url): ', '.join(lst)} for lst in table_lists]
     return parsed_site
 
 def store(parsed_site, site):
     if site == 'nhl':
         nhl_mongo_connect.insert_many(parsed_site)
-    else:
+    elif site == 'espn':
         espn_mongo_connect.insert_many(parsed_site)
+    else:
+        hockeyref_mongo_connect.insert_many(parsed_site)
     pass
 
 if __name__ == '__main__':
-    rounds = ['2', '3', '4', '5', '6', '7']
+    #rounds = ['2', '3', '4', '5', '6', '7']
     
     # for i in rounds:
     #     scrape('http://www.nhl.com/ice/draftsearch.htm?year=&team=&position=&round=' + i, 20, 'nhl')
     
-    teams = ['buf', 'car', 'mtl', 'ott', 'ari', 'det', 'van', 'chi', 'nyr', 'edm', 'nyi', 'dal',\
-         'phi', 'fla', 'col', 'njd', 'cbj', 'lak', 'sjs', 'ana', 'min', 'stl', 'tor', 'wsh', 'bos',\
-        'tbl', 'nsh', 'wpg', 'pit', 'cgy', 'vgk']
-    seasons = ['1', '2', '3']
-    years = ['2003', '2004', '2003', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', \
-        '2013', '2014', '2015', '2016', '2017', '2018', '2019']
+    # teams = ['buf', 'car', 'mtl', 'ott', 'ari', 'det', 'van', 'chi', 'nyr', 'edm', 'nyi', 'dal',\
+    #      'phi', 'fla', 'col', 'njd', 'cbj', 'lak', 'sjs', 'ana', 'min', 'stl', 'tor', 'wsh', 'bos',\
+    #     'tbl', 'nsh', 'wpg', 'pit', 'cgy', 'vgk']
+    # seasons = ['1', '2', '3']
+    # years = ['2003', '2004', '2003', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', \
+    #     '2013', '2014', '2015', '2016', '2017', '2018', '2019']
     
-    for i in teams:
-        for k in years:
-            for j in seasons:
-                scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
-                    15, 'espn')
+    # for i in teams:
+    #     for k in years:
+    #         for j in seasons:
+    #             scrape('http://www.espn.com/nhl/team/schedule/_/name/{}/season/{}/seasontype/{}'.format(i,k,j),\
+    #                 15, 'espn')
 
-https://www.hockey-reference.com/leagues/NHL_1963.html
+    for i in range(1963, 2020):
+        scrape('https://www.hockey-reference.com/leagues/NHL_{}.html'.format(str(i)),15, site='hockeyref')
