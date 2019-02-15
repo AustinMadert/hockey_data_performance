@@ -26,7 +26,7 @@ NHL draft data was sourced from http://www.nhl.com/ice/draftsearch.htm?year=&tea
 
 Season performance data was sourced https://www.hockey-reference.com/leagues/NHL_1998.html and includes team performance data by season.
 
-A web scraper script was created to programmatically scrape data from the above sites, do some initial parsing, and then store the data in a database. The script, web_scraper.py, can be found in the src folder of this repository. The script was implemented on an AWS EC2 machine so that the program could be let continue for an extended period of time given the built in sleeps to keep the data collection process respectful of the source sites. The data was stored in a MongoDB database and then brought locally for data munging.
+A <a href="src/web_scraper.py">web scraper script</a> was created to programmatically scrape data from the above sites, do some initial parsing, and then store the data in a database. The script, web_scraper.py, can be found in the src folder of this repository. The script was implemented on an AWS EC2 machine so that the program could be let continue for an extended period of time given the built in sleeps to keep the data collection process respectful of the source sites. The data was stored in a MongoDB database and then brought locally for data munging.
 
 ## Data Munging
 The data were cleaned using the Pandas package to organize data into dataframes, handle NaN fields, and set field datatypes.
