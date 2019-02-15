@@ -100,8 +100,10 @@ def nhl_parser(website, url):
 
     """
 
+    #Parse site and find relevant elements
     nhl_soup = BeautifulSoup(website.text, 'html.parser')
     nhl_tbodies = nhl_soup.find_all('tbody')
+    #Store formatted elements into a list of dictionaries
     parsed_site = [{str(ind).replace('.', '_'): ''.join(str(val).strip('[').strip(']'))} \
         for ind, val in enumerate([obj.find_all('td') for obj in nhl_tbodies])]
     return parsed_site
@@ -126,8 +128,10 @@ def espn_parser(website, url):
 
     """
 
+    #Parse site and find relevant elements
     espn_soup = BeautifulSoup(website.text, 'html.parser')
     espn_tbodies = espn_soup.find_all('tbody', class_='Table2__tbody')
+    #Store formatted elements into a list of dictionaries
     parsed_site = [{str(url).replace('.', '_'): ''.join(str(val).strip('[').strip(']'))} \
        if val != [] else {str(url).replace('.', '_'): 'no value'} \
             for ind, val in enumerate([obj.find_all('td') for obj in espn_tbodies])]
@@ -153,6 +157,7 @@ def hockeyref_parser(website, url):
 
     """
     
+    #Parse site and find relevant elements
     soup = BeautifulSoup(website.text, 'lxml')
     table_soup = soup.find('div', {'id':'all_stats'})
     table_lists = []
@@ -161,6 +166,7 @@ def hockeyref_parser(website, url):
         for items in data.select("table.stats_table tr"):
             tds = [item.get_text(strip=True) for item in items.select("th,td")]
             table_lists.append(tds)
+    #Store formatted elements into a list of dictionaries
     parsed_site = [{str(url).replace('.', '_'): ', '.join(lst)} for lst in table_lists]
     return parsed_site
 
