@@ -20,6 +20,10 @@ In order to answer this question draft data and performance data were gathered a
     - *Histogram*
     - *Chi-Squared Test*
 
+##Web Scraping
+
+Data was sourced from http://www.nhl.com/ice/draftsearch.htm?year=&team=&position=&round=1 and https://www.hockey-reference.com/leagues/NHL_1998.html 
+
 
 
 
