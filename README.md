@@ -1,6 +1,6 @@
 # NHL Hockey Draft Preference vs. Performance
 
-## <span style="color:red">**Edit:**</span> This analysis was updated using Spark SQL using a Pyspark notebook. <a href="nhl_analysis_sparkbook2.ipynb">Please follow this link to view the updated material.</a>
+## <span style="color:red">**Edit:**</span> This analysis was updated using Spark SQL using a Pyspark notebook. <a href="nhl_analysis_sparkbook.ipynb">Please follow this link to view the updated material.</a>
 
 The aim of this study was to answer the question, "Does preference for certain types of players in the preseason NHL draft result in a difference in team performance during the season?" 
 
