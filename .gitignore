@@ -1,11 +1,13 @@
 *.pem
-.ipynb_checkpoints
+*.ipynb_checkpoints
 *.com
 *.class
 *.dll
 *.exe
 *.o
 *.so
+*.pyc
+*__pycache__
 
 *.7z
 *.dmg
