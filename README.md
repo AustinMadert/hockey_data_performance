@@ -1,5 +1,7 @@
 # NHL Hockey Draft Preference vs. Performance
 
+## <span style="color:red">**Edit:**</span> This analysis was updated using Spark SQL using a Pyspark notebook. <a href="nhl_analysis_sparkbook2.ipynb">Please follow this link to view the updated material.</a>
+
 The aim of this study was to answer the question, "Does preference for certain types of players in the preseason NHL draft result in a difference in team performance during the season?" 
 
 Performance in this study is examined using wins and the difference in performance is the win percent change YoY. Additionally, each player has one of three main play positions: forward, defenseman, and goalie. Favored players are picked earlier in the draft, and so if a team picks a certain type of position earlier, it is said to prefer that position.
